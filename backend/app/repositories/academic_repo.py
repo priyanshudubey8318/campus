@@ -4,7 +4,7 @@ enrollments, teaching assignments, attendance, coursework, and assessments.
 
 from datetime import date, datetime, timezone
 from decimal import Decimal
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import uuid
 
 from sqlalchemy import func, select
