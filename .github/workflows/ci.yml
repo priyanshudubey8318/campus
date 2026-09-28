@@ -1,0 +1,96 @@
+name: CampusPulse CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend-ci:
+    name: Backend CI (Python & PostgreSQL)
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: campuspulse_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Verify Alembic Migrations on PostgreSQL
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/campuspulse_test
+        run: |
+          alembic upgrade head
+          alembic downgrade base
+          alembic upgrade head
+
+      - name: Run Pytest Integration Suite against PostgreSQL
+        working-directory: backend
+        env:
+          APP_ENV: test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/campuspulse_dev
+          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/campuspulse_test
+        run: |
+          python -m pytest tests/ -v
+
+      - name: Validate Environment Script
+        run: |
+          python scripts/validate_environment.py
+
+  frontend-ci:
+    name: Frontend CI (Next.js & TypeScript)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci || npm install
+
+      - name: Run TypeScript Typecheck
+        working-directory: frontend
+        run: npx tsc --noEmit
+
+      - name: Run ESLint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Build Next.js Production Bundle
+        working-directory: frontend
+        run: npm run build

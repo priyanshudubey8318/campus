@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "campuspulse-backend"
+version = "0.1.0"
+description = "CampusPulse backend application"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.8.0",
+    "pydantic-settings>=2.4.0",
+    "sqlalchemy>=2.0.32",
+    "alembic>=1.13.2",
+    "psycopg2-binary>=2.9.9",
+    "httpx>=0.27.0",
+    "argon2-cffi>=23.1.0",
+    "pyjwt>=2.9.0",
+    "email-validator>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.23.8",
+    "pgembed>=0.2.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

@@ -1,0 +1,88 @@
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Environment files & secrets (DO NOT COMMIT SECRETS)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.pytest_cache/
+htmlcov/
+
+# Node.js & Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# Next.js
+frontend/.next/
+frontend/out/
+.next/
+out/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+backend/test.db
+backend/*.db
+.postgres_data/
+*.pgdata/
+
+# Docker
+docker-compose.override.yml
