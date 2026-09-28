@@ -1,7 +1,7 @@
 """Authentication and identity business logic service."""
 
 from datetime import datetime, timedelta, timezone
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 

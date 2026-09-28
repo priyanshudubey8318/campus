@@ -10,6 +10,7 @@ Mandatory coverage:
 
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
+from typing import Optional
 import io
 import uuid
 import pytest
