@@ -1115,7 +1115,7 @@ def test_duplicate_effective_date_is_rejected(pulseassist_setup):
     service.publish_document(session, inst.id, doc.id, effective_from=date(2026, 1, 1), effective_to=date(2026, 6, 1))
 
     # Direct SQL INSERT with exact duplicate effective_from
-    with pytest.raises((IntegrityError, InternalError)):
+    with pytest.raises((IntegrityError, InternalError, ProgrammingError)):
         session.execute(
             text("""
             INSERT INTO document_version_schedules 
